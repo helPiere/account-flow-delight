@@ -1,16 +1,19 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useRegistration } from "@/contexts/RegistrationContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { User, Mail, Lock, ShieldCheck } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, Eye, EyeOff } from "lucide-react";
 
 const UserInfoStep = () => {
   const { userInfo, setUserInfo, nextStep } = useRegistration();
   const { toast } = useToast();
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +45,15 @@ const UserInfoStep = () => {
       });
       return;
     }
+
+    if (userInfo.password !== passwordConfirm) {
+      toast({
+        title: "Las contraseñas no coinciden",
+        description: "Por favor verifique que ambas contraseñas sean iguales",
+        variant: "destructive",
+      });
+      return;
+    }
     
     if (!userInfo.termsAccepted || !userInfo.privacyAccepted) {
       toast({
@@ -57,6 +69,14 @@ const UserInfoStep = () => {
     
     // In a real application, here you would call an API to register the user
     console.log("User info submitted:", userInfo);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -106,16 +126,47 @@ const UserInfoStep = () => {
               </div>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Cree su contraseña"
-                className="pl-10"
+                className="pl-10 pr-10"
                 value={userInfo.password}
                 onChange={(e) => setUserInfo({ password: e.target.value })}
               />
+              <button
+                type="button"
+                className="absolute right-3 top-3 text-gray-400"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
             <p className="text-xs text-gray-500">
               La contraseña debe tener al menos 6 caracteres
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="passwordConfirm">Confirmar contraseña</Label>
+            <div className="relative">
+              <div className="absolute left-3 top-3 text-gray-400">
+                <ShieldCheck size={18} />
+              </div>
+              <Input
+                id="passwordConfirm"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirme su contraseña"
+                className="pl-10 pr-10"
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-3 text-gray-400"
+                onClick={toggleConfirmPasswordVisibility}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
           
           <div className="space-y-3 pt-2">
