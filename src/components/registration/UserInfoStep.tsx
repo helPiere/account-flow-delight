@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { User, Mail, Lock, ShieldCheck, Eye, EyeOff } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, Eye, EyeOff, UserPlus } from "lucide-react";
 
 const UserInfoStep = () => {
   const { userInfo, setUserInfo, nextStep } = useRegistration();
@@ -166,6 +166,23 @@ const UserInfoStep = () => {
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="referralCode">Código de referido (opcional)</Label>
+            <div className="relative">
+              <div className="absolute left-3 top-3 text-gray-400">
+                <UserPlus size={18} />
+              </div>
+              <Input
+                id="referralCode"
+                type="text"
+                placeholder="Ingrese su código de referido si tiene uno"
+                className="pl-10"
+                value={userInfo.referralCode}
+                onChange={(e) => setUserInfo({ referralCode: e.target.value })}
+              />
             </div>
           </div>
           

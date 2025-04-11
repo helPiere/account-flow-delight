@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState } from "react";
 
 export type RegistrationStep = 
@@ -31,6 +30,7 @@ interface UserInfo {
   password: string;
   termsAccepted: boolean;
   privacyAccepted: boolean;
+  referralCode: string;
 }
 
 interface BusinessInfo {
@@ -66,6 +66,7 @@ const defaultUserInfo: UserInfo = {
   password: "",
   termsAccepted: false,
   privacyAccepted: false,
+  referralCode: "",
 };
 
 const defaultBusinessInfo: BusinessInfo = {
